@@ -34,3 +34,9 @@ int is_pre_legal(char *s) {
    }
    return (f == 1); /* legal if operand-operator==1 */
 }
+
+int main(){
+   char l[100];
+   printf("String: ");
+   gets_s("%s", &l)
+}
