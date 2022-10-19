@@ -23,7 +23,7 @@ node *insert_after(int k, node* t) {
     s = (node*)malloc(sizeof(node));
     if (s==NULL) return s;
     s->key = k;
-    s->next = t-> next;
+    s->next = t->next;
     t->next = s;
     return s;
 }

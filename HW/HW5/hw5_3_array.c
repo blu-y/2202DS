@@ -5,7 +5,7 @@
 typedef struct {
         int front;
         int rear;
-        int data[MAX];
+        int data[MAX1];
 } queue;
 queue * create_queue() {
    queue *q = (queue *)malloc(sizeof(queue));
@@ -19,13 +19,13 @@ void clear_queue(queue *q) {
 
 int put(queue *q, int k)
 {
-    if ((q->rear + 1) % MAX == q->front) /* full */
+    if ((q->rear + 1) % MAX1 == q->front) /* full */
     {
         printf("\n    Queue overflow.");
         return -1;
     }
     q->data[q->rear] = k;
-    q->rear = ++q->rear % MAX;
+    q->rear = ++q->rear % MAX1;
     return k;
 }
 int get(queue *q){
@@ -36,13 +36,13 @@ int get(queue *q){
         return -1;
     }
     i= q->data[q->front];
-    q->front = ++q->front % MAX;
+    q->front = ++q->front % MAX1;
     return i;
 }
 void print_queue(queue *q)  {
     int i;
     printf("\n  Queue contents : Front ----> Rear\n");
-    for (i= q->front; i!=q->rear; i= ++i% MAX)
+    for (i= q->front; i!=q->rear; i= ++i% MAX1)
         printf("%-6d", q->data[i]);
 }
 void main(void){
