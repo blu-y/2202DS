@@ -4,6 +4,7 @@ int price[] = {0,1,5,8,9,10};
 int maxprices[101] = {0};
 int *cut;
 int maxp(int m){
+    if (maxprices[m]!=0) return maxprices[m];
     int i,p;
     int max;
     int maxCut = MaxCut;
@@ -17,6 +18,7 @@ int maxp(int m){
             max = p;
         }
     }
+    maxprices[m] = max;
     return max;
 }
 int main(){
