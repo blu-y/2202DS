@@ -9,7 +9,7 @@ int maxp(int m) {
    if (m<=10) maxCut = m;
    max = 0;
    for (i=1; i<=maxCut; i++) {  
-      p = price[i] + maxp(m-1);
+      p = price[i] + maxp(m-i);
       if (p > max) max = p;
    }
    return max;
