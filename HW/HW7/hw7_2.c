@@ -5,16 +5,12 @@ int maxp(int m) {
    int i,p;
    int max; //최대 가격
    int maxCut = 10;
-
-   if (m<=0)
-      return 0;
-   if (m<=10)
-      maxCut = m;
-
+   if (m<=0) return 0;
+   if (m<=10) maxCut = m;
    max = 0;
    for (i=1; i<=maxCut; i++) {  
-       // i길이로 자를 때 최대 가격 계산하고, 최대가격 계산 시 업데이트
-
+      p = price[i] + maxp(m-1);
+      if (p > max) max = p;
    }
    return max;
 }
@@ -25,4 +21,5 @@ int main() {
    scanf("%d", &l);
    int p = maxp(l);
    printf("Maximum price:%d\n",p);
+   return 0;
 }
