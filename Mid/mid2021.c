@@ -13,7 +13,7 @@ int maxp(int m){
     if (m<MaxCut) maxCut = m;
     max = 0;
     for (i=1; i<=maxCut; i++){
-        p = price[i]+maxp(m-i);
+        p = price[i]+maxp(m-1);
         if (p>max){
             max = p;
         }
