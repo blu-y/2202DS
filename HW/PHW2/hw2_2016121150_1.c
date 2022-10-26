@@ -24,8 +24,9 @@ node* list_init(void){
     return head;
 }
 
-void list_append(node* h, int row, int col, int val){
+void list_append(node* h, int row, int col, int val, int mode){
     // 리스트에 새로운 값을 추가(오름차순)
+    // 파일 입력 mode = 0, 덧셈 mode = 1 
     node *s = h;
     node *p = h->next;
     node *new = (node*)malloc(sizeof(node));
@@ -51,11 +52,13 @@ void list_append(node* h, int row, int col, int val){
         if (p->val == 0){
             s->next = p->next;
             free(p);
+            if (mode) h->val -= 1;
         }
     }
     else {
         new->next = p;
         s->next = new;
+        if (mode) h->val += 1;
     }
 }
 
@@ -96,7 +99,7 @@ node* smat_load(char* str, node* h){
         row = atoi(strtok(line, " "));
         col = atoi(strtok(NULL, " "));
         val = atoi(strtok(NULL, " "));
-        list_append(h, row, col, val);
+        list_append(h, row, col, val, 0);
     }
     fclose(fp);
     return h;
@@ -145,7 +148,7 @@ node* smat_add(node *h1, node *h2){
     node* n;
     n = h2->next;
     while(n->next != n){
-        list_append(h1, n->row, n->col, n->val);
+        list_append(h1, n->row, n->col, n->val, 1);
         n = n->next;
     }
     return h1;
