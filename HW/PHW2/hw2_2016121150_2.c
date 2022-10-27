@@ -10,7 +10,6 @@
 #define MAX 100
 
 typedef struct _node *nodeptr;
-
 typedef struct _node {
     /* define node struct */
     char val;
@@ -54,22 +53,12 @@ int str2int(void){
 
 int is_operator(int i){
     return (i == '+' || i == '-' || i == '*' || i == '/');
-}
-
-int order(int s){
-    if (is_operator(s)){
-        if (s == '*') return 5;
-        if (s == '/') return 4;
-        if (s == '+') return 2;
-        if (s == '-') return 1;
-    }
-    return 8;
-}
+} /* true if i is an operator, else 0 */
 
 int num(int i){
     if (i >= 48 && i <= 57) return i-48;
     else return i;
-}
+} /* make str number to int */
 
 nodeptr pop(hnode *h){
     if (h->top == -1){
@@ -77,7 +66,7 @@ nodeptr pop(hnode *h){
         return NULL;
     }
     return h->stack[h->top--];
-}
+} /* pop top node, top-- */
 
 void push(node *a, hnode *h){
     if (h->top == 99){
@@ -85,7 +74,7 @@ void push(node *a, hnode *h){
         return;
     }
     h->stack[++h->top] = a;
-}
+} /* top ++, push node to top*/
 
 void parse_tree(char *s, hnode *h){
     node *n;
@@ -123,14 +112,10 @@ int parse_tree_calc(int x, node *t){
          2-1. if t->val is x, return x
          2-2. if t->val is number, return number
     */
-    int ret = 0;
-    int l = 0;
-    int r = 0;
     if (t->left != t->right){
-        l = parse_tree_calc(x, t->left);
-        r = parse_tree_calc(x, t->right);
-        ret = operate(t, l, r);
-        return ret;
+        int l = parse_tree_calc(x, t->left);
+        int r = parse_tree_calc(x, t->right);
+        return operate(t, l, r);
     }
     if (t->val == 'x') return x+48;
     else{
@@ -138,7 +123,20 @@ int parse_tree_calc(int x, node *t){
     }
 }
 
-void parse_tree_pre2in(node *t, int b){
+int order(int s){
+    /* return order of operator
+       order : num >> * > / >> + > -
+    */
+    if (is_operator(s)){
+        if (s == '*') return 5;
+        if (s == '/') return 4;
+        if (s == '+') return 2;
+        if (s == '-') return 1;
+    }
+    return 9;
+}
+
+void parse_tree_inorder(node *t, int b){
     if (!((t->left == t) && (t->right == t))){
         if (b) printf("( ");
         parse_tree_pre2in(t->left, order(t->val) > (order(t->left->val)+1));
