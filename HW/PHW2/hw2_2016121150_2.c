@@ -139,9 +139,9 @@ int order(int s){
 void parse_tree_inorder(node *t, int b){
     if (!((t->left == t) && (t->right == t))){
         if (b) printf("( ");
-        parse_tree_pre2in(t->left, order(t->val) > (order(t->left->val)+1));
+        parse_tree_inorder(t->left, order(t->val) > (order(t->left->val)+1));
         printf("%c ", t->val);
-        parse_tree_pre2in(t->right, order(t->val) >= order(t->right->val));
+        parse_tree_inorder(t->right, order(t->val) >= order(t->right->val));
         if (b) printf(") ");
     }
 }
@@ -170,7 +170,7 @@ int main(void){
                 break;
             case 3:
                 printf("f(x) = ");
-                parse_tree_pre2in(h1->tree, 0);
+                parse_tree_inorder(h1->tree, 0);
                 printf("\n");
                 break;
             default:
