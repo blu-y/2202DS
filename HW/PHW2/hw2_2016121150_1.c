@@ -27,7 +27,7 @@ node* list_init(void){
     return head;
 }
 
-void list_print(node* h){
+void list_print(node * h){
     /* print list head to tail*/
     node* n;
     n = h;
