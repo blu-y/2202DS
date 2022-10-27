@@ -97,7 +97,7 @@ void parse_tree(char *s, hnode *h){
         n->val = *s;
         n->left = tail;
         n->right = tail;
-        if (is_operator(*s)){
+        if (order(*s)){
             n->right = pop(h);
             n->left = pop(h);
         }
@@ -141,6 +141,7 @@ int parse_tree_calc(int x, node *t){
 void parse_tree_pre2in(node *t, int b){
     if (!((t->left == t) && (t->right == t))){
         if (b) printf("( ");
+        printf("%c %c %c %d %d\n", t->val, t->left->val, t->right->val, order(t->val) > (order(t->left->val)+1), order(t->val) >= order(t->right->val));
         parse_tree_pre2in(t->left, order(t->val) > (order(t->left->val)+1));
         printf("%c ", t->val);
         parse_tree_pre2in(t->right, order(t->val) >= order(t->right->val));
@@ -196,4 +197,17 @@ f(4) = 41
 f(x) = x * x * (x - 2) + 3* x - (x - 1)
 > 원하는 연산을 선택하시오 (1:f(x)입력, 2:함수값 계산, 3:중위식 출력, 4:종료): 4
 Bye~
+*/
+
+/*
+
+x x * x 2 - * 3 x * + x 1 - -
+
+x * x * (x - 2) + 3* x - (x - 1)
+
+
+x x * 
+
+
+
 */
