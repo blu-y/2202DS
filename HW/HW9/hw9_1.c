@@ -22,15 +22,15 @@ void select_sort(void *base, size_t nelem, size_t width,
     free(min);
 }
 
-int float_cmp(const void *a, const void *b){
+int double_cmp(const void *a, const void *b){
     /* compare float */
-    return (*(double *)a - *(double *)b);
+    return (*(double *)a - *(double *)b + 1);
 }
 
 
 int main() {
     double a[] = {4.2, 3.4, 5.6, 1.2, 3.3, 7.7};
-    select_sort(a, 6, sizeof(double), float_cmp);
+    select_sort(a, 6, sizeof(double), double_cmp);
     for (int i=0; i<6; i++)
         printf("%lf ", a[i]);
     printf("\n");
