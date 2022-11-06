@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
@@ -46,3 +45,4 @@ int main() {
         printf("%lf ", b[i]);
     printf("\n");
 }
+
