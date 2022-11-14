@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
-#define N 3000
+#define N 100
 
 int main()
 {

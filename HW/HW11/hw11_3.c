@@ -15,6 +15,16 @@
 typedef int (*FCMP)(const void*, const void*);
 typedef void (*ESFNC)(FILE*, FILE*, size_t, void*, size_t, FCMP);
 
+void print_dat(FILE* dst, size_t nelem, size_t width, FCMP fcmp) {
+    void* v = malloc(width);
+    void* z = calloc(1, width);
+    printf("\n Result : ");
+	for (int i = 0; i < nelem; i++) {
+		fread(v, width, 1, dst);
+        printf("%d ", fcmp(v, z));
+	}
+}
+
 int intcmp(const void* a, const void* b) {
     return (*(int*)a - *(int*)b);
 }
@@ -115,6 +125,8 @@ void external_sort(FILE* src, FILE* dst, size_t width, void* buf, size_t buflen,
     }
     free(min);
     free(tmp);
+    rewind(dst);
+    print_dat(dst, nelem, width, fcmp);
 }
 
 int main() {
