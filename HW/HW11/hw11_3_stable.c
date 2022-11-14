@@ -22,8 +22,7 @@ void print_dat(FILE* dst, size_t nelem, size_t width, FCMP fcmp) {
 	for (int i = 0; i < nelem; i++) {
 		fread(v, width, 1, dst);
         printf("%d ", fcmp(v, z));
-	}
-}
+}}
 
 int intcmp(const void* a, const void* b) {
     return (*(int*)a - *(int*)b);
