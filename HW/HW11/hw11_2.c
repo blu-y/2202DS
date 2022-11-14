@@ -24,6 +24,7 @@ void merge_sort(int a[], int n) {
     for (size = 1; size < n; size <<= 1) {
         first = 0; second = first + size;
         while (first < n) {
+            printf("merge(%d, %d, %d, %d, %d\n", a+first, a+second, b+first, size, min(size, n-second));
             merge(a+first, a+second, b+first, size, min(size, n-second));
             first = second + size; second = first + size;
         }
@@ -33,8 +34,8 @@ void merge_sort(int a[], int n) {
 }
 
 int main(int argc, char* argv[]) {
-    int a[] = {6, 5, 9, 4, 7, 1, 2, 8, 3};
-    merge_sort(a, 9);
-    for (int i = 0; i < 9; i++) printf("%d ", a[i]);
+    int m[] = {18, 11, 12, 6, 14, 5, 15, 9, 17, 16, 4, 7, 1, 2, 8, 3, 10, 13};
+    merge_sort(m, 18);
+    for (int i = 0; i < 18; i++) printf("%d ", m[i]);
     printf("\n");
 }

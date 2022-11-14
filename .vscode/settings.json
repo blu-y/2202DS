@@ -5,6 +5,11 @@
         "stdlib.h": "c",
         "typeinfo": "c",
         "time.h": "c",
-        "memory.h": "c"
+        "memory.h": "c",
+        "type_traits": "c",
+        "array": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "utility": "c"
     }
 }

@@ -1,8 +1,15 @@
+/*                                                           */
+/*  EXTSORT.C  :  External Sort Alogorithm Test              */
+/*                                                           */
+/*                  Programmed By Lee jaekyu                 */
+/*                                                           */
+/* partly modified by jsahn */
+
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <memory.h>
-
 #define BUFSIZE 4096
 
 typedef int (*FCMP)(const void*, const void*);
@@ -53,7 +60,7 @@ void external_sort(FILE* src, FILE* dst, size_t width, void* buf, size_t buflen,
 
     tmp = (struct entry*)malloc(sizeof(struct entry)*nfile);
     for (i = 0; i < nfile; i++) {
-        //sprintf_s(tmp[i].fname, 13, "%d.TMP", i);
+        //sprintf_s(tmp[i].fname, 13, "%d.TMP", i)
         sprintf(tmp[i].fname, "%d.TMP", i);
         tmp[i].fp = fopen(tmp[i].fname, "wb+");
         tmp[i].v = malloc(width);
@@ -103,7 +110,7 @@ void external_sort(FILE* src, FILE* dst, size_t width, void* buf, size_t buflen,
 
     for (i = 0; i < nfile; i++) {
         fclose(tmp[i].fp);
-        unlink(tmp[i].fname);
+        //unlink(tmp[i].fname);
         free(tmp[i].v);
     }
     free(min);
