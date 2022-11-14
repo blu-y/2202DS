@@ -22,40 +22,30 @@ void print_dat(FILE* dst, size_t nelem, size_t width, FCMP fcmp) {
 	for (int i = 0; i < nelem; i++) {
 		fread(v, width, 1, dst);
         printf("%d ", fcmp(v, z));
-}}
+	}
+}
 
 int intcmp(const void* a, const void* b) {
     return (*(int*)a - *(int*)b);
 }
 
-int min(int x, int y) {
-    if (x < y) return x;
-    else return y;
-}
-
-void merge(void* a, void* b, void* c, int na, int nb, size_t width, FCMP fcmp) {
-    int i = 0, j = 0, k = 0;
-    while (k < na+nb)
-        if (fcmp((char*)a + i*width, (char*)b + j*width)<= 0)
-            if (i < na) memcpy((char*)c + (k++)*width, (char*)a + (i++)*width, width);
-            else memcpy((char*)c + (k++)*width, (char*)b + (j++)*width, width);
-        else
-            if (j < nb) memcpy((char*)c + (k++)*width, (char*)b + (j++)*width, width);
-            else memcpy((char*)c + (k++)*width, (char*)a + (i++)*width, width);
-}
-
-void merge_sort(void* a, size_t n, size_t w, FCMP fcmp) {
-    int i, j, k, p, s, size;
-    int *b = malloc(w*n);
-    for (size = 1; size < n; size <<= 1) {
-        p = 0; s = p + size;
-        while (p < n) {
-            merge((char*)a + p*w, (char*)a + s*w, (char*)b + p*w, size, min(size, n-s), w, fcmp);
-            p = s + size; s = p + size;
-        }
-        for (i = 0; i < n; i++) memcpy(a, b, sizeof(int)*n);
-    }
-    free(b);
+void shell_sort(void* base, size_t nelem, size_t width, FCMP fcmp) {
+    int i, j, k, h;
+    void* v;
+    v = malloc(width);
+    for (h = 1; h < nelem; h = 3*h + 1);
+    for (h /= 3; h > 0; h /= 3) {
+        for (i = 0; i < h; i++) {
+            for (j = i+h; j < nelem; j += h) {
+                memcpy(v, (char*)base + j*width, width);
+                k = j;
+                while (k > h-1 && fcmp((char*)base + (k-h)*width, v) > 0) {
+                    memcpy((char*)base + k*width, (char*)base + (k-h)*width, width);
+                    k -= h;
+                }
+                memcpy((char*)base + k*width, v, width);
+    }}}
+    free(v);
 }
 
 struct entry {
@@ -92,13 +82,13 @@ void external_sort(FILE* src, FILE* dst, size_t width, void* buf, size_t buflen,
     for (i = 0; i < nfile - 1; i++) {
         int ne;
         fread(buf, width, nbuf, src);
-        merge_sort(buf, nbuf, width, fcmp);
+        shell_sort(buf, nbuf, width, fcmp);
         ne = fwrite(buf, width, nbuf, tmp[i].fp);
 
         printf("\n Reading & Sorting & Writing %s.", tmp[i].fname);
     }
     fread(buf, width, nelem % nbuf, src);
-    merge_sort(buf, nelem % nbuf, width, fcmp);
+    shell_sort(buf, nelem % nbuf, width, fcmp);
     fwrite(buf, width, nelem % nbuf, tmp[i].fp);
 
     printf("\n Reading & Sorting & Writing %s.", tmp[i].fname);
