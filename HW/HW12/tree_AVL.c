@@ -87,7 +87,16 @@ main() {
 	bti_insert(0, tree, &num);
 	printf("\ninorder: ");
 	print_tree(tree);
-	//printf("\n");
-	//sum_tree(tree);
-	
+
+	node *tmp, *p, *s;
+	p = tree->left;
+	s = p->left;
+	p->left = s->right;
+	s->right = p;
+	tree->left = s;
+
+	printf("\ninorder(AVL): ");
+	print_tree(tree);
+	printf("\npostorder(AVL): ");
+	print_tree_post(tree);
 }
