@@ -32,8 +32,10 @@ int cmp(student* a, student* b) {
     // return +: a > b
     // return 0: a = b
     // return -: a < b
+    // continue until different letter or until end of string
+    // if different letter return a-b(major)
+    // if same end of string return a-b(id)
     int i = 0;
-    // continue until different letter appear of end of string
     while(up(a->maj[i]) == up(b->maj[i]) && up(a->maj[i]) != 0 && up(b->maj[i]) != 0) i++;
     if (up(a->maj[i]) == up(b->maj[i])) {
         i = 0;
@@ -45,6 +47,7 @@ int cmp(student* a, student* b) {
 }
 
 void upheap(student* S[], int k) {
+    // sort along ancestors going up, k/=2
     student* v = (student *)malloc(sizeof(student));
     memcpy(v, S[k], sizeof(student));
     while (cmp(S[k/2], v) <= 0) {
@@ -55,6 +58,7 @@ void upheap(student* S[], int k) {
     free(v);
 }
 void downheap(student* S[], int n, int k) {
+    // sort along descendants going down, k*=2
     student* v = (student *)malloc(sizeof(student));
     int i;
     memcpy(v, S[k], sizeof(student));
@@ -69,9 +73,12 @@ void downheap(student* S[], int n, int k) {
     free(v);
 }
 void heap_sort(student* S[], int n) {
+    // heap sort
+    // upheap -> extract -> downheap
     student* tmp = (student *)malloc(sizeof(student));
     for (int i = 2; i < n; i++) upheap(S, i);
     for (int i = n-1; i >= 2; i--) {
+        //extract
         memcpy(tmp, S[1], sizeof(student));
         memcpy(S[1], S[i], sizeof(student));
         memcpy(S[i], tmp, sizeof(student));
@@ -111,7 +118,7 @@ int loadfile(char* fn, student* S[MAX]) {
     return i;
 }
 
-void savefile(char* fn, student* S[], int n) {
+void data_save(char* fn, student* S[], int n) {
     FILE* fp;
     char fno[MAX];
     strcpy(fno, fn);
@@ -133,12 +140,11 @@ void savefile(char* fn, student* S[], int n) {
 
 int main(int argc, char* argv[]) {
     student* S[MAX];
-    argv[1] = "student.txt";
     int n = loadfile(argv[1], S);
     heap_sort(S, n);
     // for (int i = 1; i < n; i++) {
     //     printf("%s %s %s\n", S[i]->name, S[i]->id, S[i]->maj);
     // }
-    savefile(argv[1], S, n);
+    data_save(argv[1], S, n);
     return 0;
 }
