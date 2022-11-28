@@ -38,6 +38,18 @@ void postorder_sum(node *t) {
 		printf("%d ", t->key);
 	}
 }
+
+/*
+int sum(node* t){
+	if(t != NULL) {
+		int total = 0;
+		total += sum(t->left) + sum(t->right) + t->key;
+		return total;
+	}
+	return 0;
+}
+*/
+
 void sum_tree(node *t) {
 	postorder_sum(t->left);
 	printf("\nsum: %d", t->left->key);
