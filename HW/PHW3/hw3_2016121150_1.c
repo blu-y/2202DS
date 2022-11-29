@@ -24,7 +24,7 @@ typedef struct {
 } student;
 
 int up(int i) {
-    // upper letter
+    // make upper letter
     if (i >=97 && i <= 122) i -=32;
     return i;
 }
@@ -125,6 +125,7 @@ void data_save(char* fn, student* S[], int n) {
     strcat(fno, ".out");
     char line[LINE_SIZE];
     fopen_s(&fp, fno, "w");
+    // put data 1 ~ n-1, 0 is sentinel value
     for (int i = 1; i < n; i++){
         strcpy(line, S[i]->name);
         strcat(line, " ");

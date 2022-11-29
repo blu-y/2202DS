@@ -5,7 +5,6 @@
         Data order: 이름 학번 전공
     Output: .out
         Sort order: 학번
-    > HW\PHW3\hw3_2016121150_2.exe infile.txt
     2016121150 윤준영 */
 
 #include <stdio.h>
@@ -25,6 +24,14 @@ typedef struct _stdt {
     struct _stdt* right;
 } stdt;
 
+int digit(int i) {
+    int digit = 0;
+    while (i != 0) {
+        i = i/10;
+        ++digit;
+    }
+    return digit;
+}
 int up(int i) {
     // upper letter
     if (i >=97 && i <= 122) i -=32;
@@ -44,7 +51,6 @@ int str2int(void){
     input(s);
     return atoi(s);
 }
-
 void bintree_init(stdt** s) {
     *s = (stdt *)malloc(sizeof(stdt));
     (*s)->id = INT_MAX;
@@ -91,6 +97,8 @@ int data_load(char* fn, stdt* S) {
         s->id = atoi(lp);
         lp = strtok(NULL, " ");     // get major
         strcpy(s->maj, lp);
+        s->left = NULL;
+        s->right = NULL;
         i = data_insert(S, s, i);
     }
     fclose(fp);
@@ -106,12 +114,17 @@ void inorder_print(stdt* s) {
     }
 }
 int inorder_save(FILE* fp, stdt* s, int n) {
-    char line[LINE_SIZE];
+    char l1[LINE_SIZE];
+    char l2[LINE_SIZE];
+    char zero[ID_SIZE] = "00000000";
     while (s != NULL) {
         n = inorder_save(fp, s->left, n);
-        sprintf(line, "%s %d %s", s->name, s->id, s->maj);
-        if (n!=1) strcat(line, "\n");
-        fputs(line, fp);
+        sprintf(l1, "%s ", s->name);
+        strncat(l1, zero, 8-digit(s->id));
+        sprintf(l2, "%d %s", s->id, s->maj);
+        strcat(l1, l2);
+        if (n!=1) strcat(l1, "\n");
+        fputs(l1, fp);
         n = n-1;
         n = inorder_save(fp, s->right, n);
         return n;
@@ -147,21 +160,21 @@ int data_delete(stdt* S, int id, int n) {
         if (s->id == id) {
             printf("[%s %d %s] is deleted!", s->name, s->id, s->maj);
             if (s->right == NULL) {
-                if (d) p->right = s->left;
+                if (d == 1) p->right = s->left;
                 else p->left = s->left;
             }
             else if (s->right->left == NULL) {
-                if (d) p->right = s->right;
+                s->right->left = s->left;
+                if (d == 1) p->right = s->right;
                 else p->left = s->right;
             }
             else {
                 des = s->right;
                 while (des->left->left != NULL) des = des->left;
-                if (d) p->right = des->left;
+                if (d == 1) p->right = des->left;
                 else p->left = des->left;
                 des->left->left = s->left;
-                des->left->right = s->right;
-                des->left = NULL;
+                des->left = des->left->right;
             }
             free(s);
             return --n;
@@ -177,16 +190,11 @@ int data_delete(stdt* S, int id, int n) {
             d = 1;
         }
     }
-    printf("[%s] is not found");
+    printf("[%d] is not found", id);
     return n;
 }
 
 int main(void) {
-    // for (int i = 1; i < n; i++) {
-    //     printf("%s %s %s\n", S[i]->name, S[i]->id, S[i]->maj);
-    // }
-
-    // stdt* s = (stdt *)malloc(sizeof(stdt));
     stdt* S;
     stdt* s = (stdt *)malloc(sizeof(stdt));
     bintree_init(&S);
@@ -211,7 +219,6 @@ int main(void) {
                 printf("Input Major : ");
                 input(s->maj);
                 n = data_insert(S, s, n);
-                n++;
                 printf("Data Inserted!");
                 break;
             case 3: // find
