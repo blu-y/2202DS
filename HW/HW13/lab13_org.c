@@ -20,23 +20,16 @@ typedef struct _node
 int hash_func(int key)
 {
 	int h;
-	h = key / TABLE_SIZE + key % TABLE_SIZE;
-	h = h % TABLE_SIZE;
+	h = key % TABLE_SIZE;
 	return h;
 }
 
 node* hsc_search(int key, node a[], int* np)
 {
 	node* t;
-	int b = hash_func(key);
-	t = a[b].next;
-	int n = 0;
-	while (t != NULL && t->key != key) {
+	t = a[hash_func(key)].next;
+	while (t != NULL && t->key != key)
 		t = t->next;
-		n += 1;
-		}
-	if (t != NULL) printf("%d번째 버킷 %d번째 노드에 있음", b, n);
-	else printf("%d없음", key);
 	return t;
 }
 
@@ -119,7 +112,7 @@ int hsc_list(node a[], int N)
 		t = a[i].next;
 		while (t != NULL)
 		{
-			printf(" -> %d", t->key);
+			printf(" -> %c", t->key);
 			t = t->next;
 		}
 	}
@@ -134,20 +127,8 @@ void main(void)
 	int nitem = 0;
 	hsc_create(&bucket, &nitem, TABLE_SIZE);
 
-	hsc_insert(12, bucket, &nitem);
-	hsc_insert(32, bucket, &nitem);
-	hsc_insert(79, bucket, &nitem);
-	hsc_insert(11, bucket, &nitem);
-	hsc_insert(22, bucket, &nitem);
 
-	hsc_search(22, bucket, &nitem);
-	
-	hsc_list(bucket, TABLE_SIZE);
+
 	hsc_deleteall(bucket, &nitem, TABLE_SIZE);
 	free(bucket);
 }
-
-
-
-
-
